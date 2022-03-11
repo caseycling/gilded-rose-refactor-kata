@@ -6,38 +6,38 @@ const { Item } = require('../src/item/item');
 const Specials = {
   Brie: 'Aged brie',
   Pass: 'Backstage pass',
-  Lego: 'Sulfuras',
+  Hammer: 'Sulfuras',
 };
 
 describe('Gilded Rose', () => {
-  test('should degrade a random Item', () => {
-    const gildedRose = new Shop([new Item('foo', 5, 5)]);
+  test('should degrade a regular Item', () => {
+    const gildedRose = new Shop([new Item('test', 10, 10)]);
     const items = gildedRose.updateQuality();
     const fooItem = items.shift();
-    expect(fooItem.name).toEqual('foo');
-    expect(fooItem.sellIn).toEqual(4);
-    expect(fooItem.quality).toEqual(4);
+    expect(fooItem.name).toEqual('test');
+    expect(fooItem.sellIn).toEqual(9);
+    expect(fooItem.quality).toEqual(9);
   });
 
   test('should decrease quality of Item by 2 when past use-by date', () => {
-    const GildedRose = new Shop([new Item('foo', 0, 5)]);
+    const GildedRose = new Shop([new Item('test', 10, 10)]);
     const items = GildedRose.updateQuality();
     const item = items.shift();
-    expect(item.quality).toEqual(3);
-    expect(item.sellIn).toEqual(-1);
+    expect(item.quality).toEqual(8);
+    expect(item.sellIn).toEqual(9);
   });
 
   test('should not degrade Item quality below zero', () => {
-    const gildedRose = new Shop([new Item('foo', 0, 0)]);
+    const gildedRose = new Shop([new Item('test', 10, 0)]);
     const items = gildedRose.updateQuality();
     const fooItem = items.shift();
-    expect(fooItem.name).toEqual('foo');
-    expect(fooItem.sellIn).toEqual(-1);
+    expect(fooItem.name).toEqual('test');
+    expect(fooItem.sellIn).toEqual(9);
     expect(fooItem.quality).toEqual(0);
   });
 
-  test('should not degrade Hand of Rag', () => {
-    const GildedRose = new Shop([new Item(Specials.Lego, 0, 0)]);
+  test('should not degrade sulfaras', () => {
+    const GildedRose = new Shop([new Item(Specials.Hammer, 0, 0)]);
     const items = GildedRose.updateQuality();
     expect(items[0].quality).toEqual(80);
   });
